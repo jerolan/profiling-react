@@ -1,23 +1,15 @@
-import faker from "@faker-js/faker";
-import sample from "lodash/sample";
-import times from "lodash/times";
 import { useState } from "react";
 import List from "./List";
 import ListItem from "./ListItem";
+import useProducts from "./useProducts";
 
 export default function App() {
   const [search, setSearch] = useState("");
-  const items = times(10, () => ({
-    id: faker.datatype.uuid(),
-    name: faker.commerce.productName(),
-    price: faker.commerce.price(),
-    color: faker.commerce.color(),
-    background: sample([
-      "from-cyan-500 to-blue-500",
-      "from-indigo-500 via-purple-500 to-pink-500",
-      "from-indigo-500 to-blue-500",
-    ]),
-  }));
+  const products = useProducts(search);
+
+  const filteredProducts = products.filter(
+    (item) => item.name.toLowerCase().search(search.toLowerCase()) > -1
+  );
 
   return (
     <main className="tracking-tight">
@@ -43,7 +35,7 @@ export default function App() {
             </div>
           </div>
           <List
-            items={items}
+            items={filteredProducts}
             renderItem={(item) => (
               <ListItem
                 key={item.id}
