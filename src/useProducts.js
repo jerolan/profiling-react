@@ -19,9 +19,11 @@ export default function useProducts(search) {
       ]),
     }));
 
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setProducts(items);
     }, 100);
+
+    return () => clearTimeout(timer);
   }, [search]);
 
   return products;

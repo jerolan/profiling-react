@@ -2,6 +2,7 @@ import { useState } from "react";
 import List from "./List";
 import ListItem from "./ListItem";
 import useProducts from "./useProducts";
+import SearchInput from "./SearchInput";
 
 export default function App() {
   const [search, setSearch] = useState("");
@@ -23,16 +24,7 @@ export default function App() {
         <div>
           <div className="pb-8 flex items-center justify-between">
             <h4 className="text-2xl font-bold text-gray-900">My Products</h4>
-            <div className="rounded-md w-2/4">
-              <input
-                type="text"
-                name="search"
-                placeholder="Buscar un producto"
-                className="border bg-gray-100 rounded-md h-6 w-full px-3"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
+            <SearchInput onSearch={setSearch} />
           </div>
           <List
             items={filteredProducts}
