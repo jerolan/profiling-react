@@ -1,4 +1,24 @@
-function App() {
+import faker from "@faker-js/faker";
+import sample from "lodash/sample";
+import times from "lodash/times";
+import { useState } from "react";
+import List from "./List";
+import ListItem from "./ListItem";
+
+export default function App() {
+  const [search, setSearch] = useState("");
+  const items = times(10, () => ({
+    id: faker.datatype.uuid(),
+    name: faker.commerce.productName(),
+    price: faker.commerce.price(),
+    color: faker.commerce.color(),
+    background: sample([
+      "from-cyan-500 to-blue-500",
+      "from-indigo-500 via-purple-500 to-pink-500",
+      "from-indigo-500 to-blue-500",
+    ]),
+  }));
+
   return (
     <main className="tracking-tight">
       <header className="flex items-center justify-between h-16 border px-16">
@@ -9,31 +29,33 @@ function App() {
       </header>
       <div className="px-16 py-32">
         <div>
-          <h4 className="text-2xl font-bold text-gray-900 pb-8">My Products</h4>
-          <div className="grid grid-cols-4 gap-y-10 gap-x-6">
-            <article className="group relative">
-              <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 h-80">
-                <div className="w-full h-full bg-gradient-to-r from-cyan-500 to-blue-500" />
-              </div>
-              <div className="mt-4 flex justify-between">
-                <div>
-                  <h3 className="text-sm text-gray-700">
-                    <span
-                      aria-hidden="true"
-                      className="absolute inset-0"
-                    ></span>
-                    Basic Tee
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-500">Black</p>
-                </div>
-                <p className="text-sm font-medium text-gray-900">$35</p>
-              </div>
-            </article>
+          <div className="pb-8 flex items-center justify-between">
+            <h4 className="text-2xl font-bold text-gray-900">My Products</h4>
+            <div className="rounded-md w-2/4">
+              <input
+                type="text"
+                name="search"
+                placeholder="Buscar un producto"
+                className="border bg-gray-100 rounded-md h-6 w-full px-3"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
           </div>
+          <List
+            items={items}
+            renderItem={(item) => (
+              <ListItem
+                key={item.id}
+                background={item.background}
+                name={item.name}
+                color={item.color}
+                price={item.price}
+              />
+            )}
+          />
         </div>
       </div>
     </main>
   );
 }
-
-export default App;
