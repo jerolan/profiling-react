@@ -11,7 +11,7 @@ export default function useProducts(search, limit) {
     setIsLoading(true);
     const items = times(limit, () => ({
       id: faker.datatype.uuid(),
-      name: faker.commerce.productName(),
+      name: `${search} ${faker.commerce.productName()}`,
       price: faker.commerce.price(),
       color: faker.commerce.color(),
       background: sample([

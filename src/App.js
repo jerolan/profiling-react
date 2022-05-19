@@ -12,10 +12,6 @@ export default function App() {
   const [items, setItems] = useState(PAGE_SIZE);
   const { products, isLoading } = useProducts(search, items);
 
-  const filteredProducts = products.filter(
-    (item) => item.name.toLowerCase().search(search.toLowerCase()) > -1
-  );
-
   return (
     <main className="tracking-tight">
       <header className="flex items-center justify-between h-16 border px-16">
@@ -31,7 +27,7 @@ export default function App() {
         </div>
         <List
           loading={isLoading}
-          items={filteredProducts}
+          items={products}
           renderLoadingItem={() => <ListItemSkeleton />}
           fetchMore={() => {
             if (!isLoading) {
