@@ -3,10 +3,14 @@ import List from "./List";
 import ListItem from "./ListItem";
 import useProducts from "./useProducts";
 import SearchInput from "./SearchInput";
+import ListItemSkeleton from "./ListItemSkeleton";
+
+const PAGE_SIZE = 5;
 
 export default function App() {
   const [search, setSearch] = useState("");
-  const products = useProducts(search);
+  const [items, setItems] = useState(PAGE_SIZE);
+  const { products, isLoading } = useProducts(search, items);
 
   const filteredProducts = products.filter(
     (item) => item.name.toLowerCase().search(search.toLowerCase()) > -1
@@ -21,24 +25,29 @@ export default function App() {
         </figure>
       </header>
       <div className="px-16 py-32">
-        <div>
-          <div className="pb-8 flex items-center justify-between">
-            <h4 className="text-2xl font-bold text-gray-900">My Products</h4>
-            <SearchInput onSearch={setSearch} />
-          </div>
-          <List
-            items={filteredProducts}
-            renderItem={(item) => (
-              <ListItem
-                key={item.id}
-                background={item.background}
-                name={item.name}
-                color={item.color}
-                price={item.price}
-              />
-            )}
-          />
+        <div className="pb-8 flex items-center justify-between">
+          <h4 className="text-2xl font-bold text-gray-900">My Products</h4>
+          <SearchInput onSearch={setSearch} />
         </div>
+        <List
+          loading={isLoading}
+          items={filteredProducts}
+          renderLoadingItem={() => <ListItemSkeleton />}
+          fetchMore={() => {
+            if (!isLoading) {
+              setItems((prevItems) => prevItems + PAGE_SIZE);
+            }
+          }}
+          renderItem={(item) => (
+            <ListItem
+              key={item.id}
+              background={item.background}
+              name={item.name}
+              color={item.color}
+              price={item.price}
+            />
+          )}
+        />
       </div>
     </main>
   );

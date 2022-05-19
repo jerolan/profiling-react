@@ -3,11 +3,13 @@ import sample from "lodash/sample";
 import times from "lodash/times";
 import { useEffect, useState } from "react";
 
-export default function useProducts(search) {
+export default function useProducts(search, limit) {
+  const [isLoading, setIsLoading] = useState(false);
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const items = times(faker.datatype.number({ min: 500, max: 3000 }), () => ({
+    setIsLoading(true);
+    const items = times(limit, () => ({
       id: faker.datatype.uuid(),
       name: faker.commerce.productName(),
       price: faker.commerce.price(),
@@ -21,10 +23,11 @@ export default function useProducts(search) {
 
     const timer = setTimeout(() => {
       setProducts(items);
-    }, 100);
+      setIsLoading(false);
+    }, 2000);
 
     return () => clearTimeout(timer);
-  }, [search]);
+  }, [limit, search]);
 
-  return products;
+  return { products, isLoading };
 }
