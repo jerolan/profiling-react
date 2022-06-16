@@ -7,10 +7,6 @@ export default function App() {
   const [search, setSearch] = useState("");
   const products = useProducts(search);
 
-  const filteredProducts = products.filter(
-    (item) => item.name.toLowerCase().search(search.toLowerCase()) > -1
-  );
-
   return (
     <main className="tracking-tight">
       <header className="flex items-center justify-between h-16 border px-16">
@@ -35,7 +31,7 @@ export default function App() {
             </div>
           </div>
           <List
-            items={filteredProducts}
+            items={products}
             renderItem={(item) => (
               <ListItem
                 key={item.id}

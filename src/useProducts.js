@@ -9,7 +9,7 @@ export default function useProducts(search) {
   useEffect(() => {
     const items = times(faker.datatype.number({ min: 500, max: 3000 }), () => ({
       id: faker.datatype.uuid(),
-      name: faker.commerce.productName(),
+      name: `${search} ${faker.commerce.productName()}`,
       price: faker.commerce.price(),
       color: faker.commerce.color(),
       background: sample([
